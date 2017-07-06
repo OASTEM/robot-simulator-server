@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ROBOT RUMBLE &raquo; Oxford Academy STEM</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto+Mono:400,500,700|Roboto:400,500,700" rel="stylesheet">
+<script>
+function nl2br(data) {
+	return data.replace("\n", "<br>");
+}
+
+document.addEventListener("DOMContentLoaded", function() { 
+	document.getElementById("submit").addEventListener("click", function(e) { 
+		fetch("/run", { "method": "POST", "body": document.getElementById("rawcode").value })
+			.then((resp) => resp.json())
+			.then(function(json) { 
+				document.getElementById("out").innerHTML = nl2br(json.out);
+				document.getElementById("dbg").innerHTML = nl2br(json.dbg);
+			});
+	});
+});
+</script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Roboto, sans-serif; }
+h1 { font-family: "Roboto Condensed"; font-size: 1.5em; margin: 0.5em; }
+main { display: flex; width: 100%; height: 100vh; }
+main section {
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+textarea#rawcode {
+	display: block;
+	width: 100%;
+	font-family: "Roboto Mono";
+	height: calc(100vh - 3.75em);
+	padding: 1em;
+}
+div.code { font-family: "Roboto Mono"; height: calc(50vh - 2em); overflow: auto; padding: 0.5em; }
+button#submit {
+	font-family: Roboto;
+	font-size: 1.25em;
+	padding: 0.5em;
+	border: 1px solid #4CAF50;
+	background-color: #81C784;
+	transition: border-color 0.1s, background-color 0.1s;
+}
+button#submit:hover {
+	border-color: #66BB6A;
+	background-color: #A5D6A7;
+}
+button#submit:active {
+	border-color: #388E3C;
+	background-color: #4CAF50;
+}
+</style>
+</head>
+<body>
+	<main>
+		<section id="code">
+			<h1>Code goes here</h1>
+			<textarea id="rawcode"></textarea>
+			<button id="submit">Submit code</button>
+		</section>
+		<section id="output">
+			<h1>Output</h1>
+			<div id="out" class="code"></div>
+			<h1>Debug</h1>
+			<div id="dbg" class="code"></div>
+		</section>
+	</main>
+</body>
+</html>
